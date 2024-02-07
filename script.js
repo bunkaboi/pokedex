@@ -15,12 +15,50 @@ function renderPokemonInfo() {
     document.getElementById('pokemonArtwork').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
 }
 
-function renderBasestats() {
+function renderBaseStats() {
     let stats = currentPokemon['stats'];
-    let baseStats = document.getElementById('info-content');
+    let statNames = document.getElementById('stat-Name');
+    let statValues = document.getElementById('stat-Value');
     
+    statNames.innerHTML = ``;
+    statValues.innerHTML = ``;
+
     for (let i = 0; i  < stats.length; i++) {
         const statsNumber = stats[i];
-        baseStats.innerHTML += `<div>${statsNumber['stat']['name']}: ${statsNumber['base_stat']}</div>`;
+        statNames.innerHTML += `
+            <div>${statsNumber['stat']['name']}:</div>
+            `;
+        statValues.innerHTML += `
+            <div class="progress" style="width: 200px">
+                <div class="progress-bar" role="progressbar" aria-valuenow="${statsNumber['base_stat']}" 
+                aria-valuemin="0" aria-valuemax="100" 
+                style="width: ${statsNumber['base_stat']}%;">${statsNumber['base_stat']}
+                </div>
+            </div>  
+            `;
+    }
+}
+
+function renderAbout() {
+    let stats = currentPokemon['stats'];
+    let statNames = document.getElementById('stat-Name');
+    let statValues = document.getElementById('stat-Value');
+    
+    statNames.innerHTML = ``;
+    statValues.innerHTML = ``;
+
+    for (let i = 0; i  < stats.length; i++) {
+        const statsNumber = stats[i];
+        statNames.innerHTML += `
+            <div>${statsNumber['stat']['name']}:</div>
+            `;
+        statValues.innerHTML += `
+            <div class="progress" style="width: 200px">
+                <div class="progress-bar" role="progressbar" aria-valuenow="${statsNumber['base_stat']}" 
+                aria-valuemin="0" aria-valuemax="100" 
+                style="width: ${statsNumber['base_stat']}%;">${statsNumber['base_stat']}
+                </div>
+            </div>  
+            `;
     }
 }
