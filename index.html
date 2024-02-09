@@ -7,22 +7,13 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
 
-    <!-- Das neueste kompilierte und minimierte CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-
-    <!-- Optionales Theme -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-
-    <!-- Das neueste kompilierte und minimierte JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-
 </head>
-<body onload="loadPokemon()">
+<body onload="loadDataOverhead()">
 
     <div class="main-container">
         <div class="card-container">
 
-            <div class="header">
+            <div id="header" class="header">
                 <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="white" d="M20 11H7.41l3.29-3.29A1 1 0 0 0 9.29 6.29L3.71 11.88a1 1 0 0 0 0 1.41l5.58 5.59a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L7.41 13H20a1 1 0 0 0 0-2z"/>
                   </svg>
@@ -32,7 +23,8 @@
                   </svg>
             </div>
 
-            <div class="visu-container">
+            <div id="visu-container" class="visu-container">
+                <div id="type-icon" class="type-icon">hallo</div>
                 <img id="pokemonArtwork" class="pokemonArtwork" src="" alt="Artwork">            
             </div>
 
@@ -40,13 +32,10 @@
                 <div class="info-navbar">
                     <div id="info-navpoint-1" class="info-navpoint" onclick="renderAbout()">About</div>
                     <div id="info-basestats" class="info-navpoint" onclick="renderBaseStats()">Base Stats</div>
-                    <div id="info-navpoint-3" class="info-navpoint">menu</div>
-                    <div id="info-navpoint-4" class="info-navpoint">menu</div>
+                    <div id="info-ability" class="info-navpoint" onclick="renderAbility()">Ability</div>
+                    <div id="info-moves" class="info-navpoint" onclick="renderMoves()">Moves</div>
                 </div>
-                <div class="info-content-container">
-                    <div id="stat-Name" class="stat-Name"></div>
-                    <div id="stat-Value" class="stat-Value"></div>
-                </div>
+                <div id="info-content-container" class="info-content-container"></div>
             </div>
             
         </div>

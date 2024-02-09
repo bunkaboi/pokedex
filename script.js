@@ -1,15 +1,22 @@
-let currentPokemon;
+let dataOverhead;
 
-async function loadPokemon() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/charmander'
-    let response = await fetch(url);
-    currentPokemon = await response.json();
-    console.log('loaded Pokemon', currentPokemon);
 
-    renderPokemonInfo();
+
+
+async function loadDataOverhead() {
+    let firstURL = 'https://pokeapi.co/api/v2/pokemon/'
+    let response = await fetch(firstURL);
+    dataOverhead = await response.json();
+    console.log('loaded Data', dataOverhead);
+
+
+    renderPokemonProfile();
+    renderTypeIcon();
 }
 
-function renderPokemonInfo() {
+
+
+function renderPokemonProfile() {
 
     document.getElementById('pokemonName').innerHTML = currentPokemon['name'];
     document.getElementById('pokemonArtwork').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
@@ -17,48 +24,63 @@ function renderPokemonInfo() {
 
 function renderBaseStats() {
     let stats = currentPokemon['stats'];
-    let statNames = document.getElementById('stat-Name');
-    let statValues = document.getElementById('stat-Value');
-    
-    statNames.innerHTML = ``;
-    statValues.innerHTML = ``;
+    let infoContainer = document.getElementById('info-content-container');
+
+    let typeNameFromAPI = currentPokemon['types'][0]['type']['name'];
+    let index = elementIndex.indexOf(typeNameFromAPI);
+    let colorLight = elementtypes[index][typeNameFromAPI][1];
+    let colorDark = elementtypes[index][typeNameFromAPI][0];
+
+    infoContainer.innerHTML = ``;
+
+    infoContainer.innerHTML = /*HTML*/`
+        <div id="info-stat-content-container"></div>
+        `;
+
+    let infoStatContainer = document.getElementById('info-stat-content-container');
 
     for (let i = 0; i  < stats.length; i++) {
         const statsNumber = stats[i];
-        statNames.innerHTML += `
-            <div>${statsNumber['stat']['name']}:</div>
-            `;
-        statValues.innerHTML += `
-            <div class="progress" style="width: 200px">
-                <div class="progress-bar" role="progressbar" aria-valuenow="${statsNumber['base_stat']}" 
-                aria-valuemin="0" aria-valuemax="100" 
-                style="width: ${statsNumber['base_stat']}%;">${statsNumber['base_stat']}
+
+        infoStatContainer.innerHTML += /*HTML*/`
+        <div class="info-content-row">
+            <div id="stat-Name" class="info-text">
+                <div>${statsNumber['stat']['name']}:</div>
+            </div>
+            <div id="stat-Value" class="info-text">
+                <div><b>${statsNumber['base_stat']}</b></div>
+            </div>
+            <div class="stat-bar-container">
+                <div id="stat-bar" class="stat-bar" style="background-color: ${colorLight};">
+                    <div class="stat-bar-progress" style="width: ${statsNumber['base_stat']}%; background-color: ${colorDark};"></div>
                 </div>
-            </div>  
-            `;
+            </div> 
+        </div>
+        `;
+    }
+
+}
+
+function renderAbility() {
+    let abilities = currentPokemon['abilities'];
+    let infoContainer = document.getElementById('info-content-container');
+
+    infoContainer.innerHTML = ``;
+
+    for (let i = 0; i < abilities.length; i++) {
+        const abilityArr = abilities[i];
+
+        infoContainer.innerHTML += /*HTML*/`
+            <div class="info-text">${abilityArr['ability']['name']}</div>
+        `;
+        
     }
 }
 
-function renderAbout() {
-    let stats = currentPokemon['stats'];
-    let statNames = document.getElementById('stat-Name');
-    let statValues = document.getElementById('stat-Value');
-    
-    statNames.innerHTML = ``;
-    statValues.innerHTML = ``;
-
-    for (let i = 0; i  < stats.length; i++) {
-        const statsNumber = stats[i];
-        statNames.innerHTML += `
-            <div>${statsNumber['stat']['name']}:</div>
-            `;
-        statValues.innerHTML += `
-            <div class="progress" style="width: 200px">
-                <div class="progress-bar" role="progressbar" aria-valuenow="${statsNumber['base_stat']}" 
-                aria-valuemin="0" aria-valuemax="100" 
-                style="width: ${statsNumber['base_stat']}%;">${statsNumber['base_stat']}
-                </div>
-            </div>  
-            `;
-    }
+function renderTypeIcon() {
+    let types = currentPokemon['types'][0]['type'];
+    let typeIcon = document.getElementById('type-icon')
+    typeIcon.innerHTML = ``;
+    typeIcon.innerHTML = `<div>${types['name']}</div>
+    `;
 }
