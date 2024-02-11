@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Underwater Background</title>
+    <style>
+        #map-container {
+            width: 800px;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+        #underwater-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="toggleUnderwaterBackground()">Toggle Underwater Background</button>
+    <div id="map-container">
+        <div id="underwater-bg"></div>
+        <!-- Hier können Sie Ihre Karte einfügen -->
+        <div id="map">
+            <!-- Ihre Karteninhalte hier -->
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        let underwaterBackgroundEnabled = false;
+
+        function toggleUnderwaterBackground() {
+            underwaterBackgroundEnabled = !underwaterBackgroundEnabled;
+            if (underwaterBackgroundEnabled) {
+                showUnderwaterBackground();
+            } else {
+                hideUnderwaterBackground();
+            }
+        }
+
+        function showUnderwaterBackground() {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('underwater-bg').appendChild(renderer.domElement);
+
+            const geometry = new THREE.PlaneGeometry(2000, 2000, 20, 20);
+            const material = new THREE.MeshBasicMaterial({ color: 0x4682B4, side: THREE.DoubleSide });
+            const plane = new THREE.Mesh(geometry, material);
+            scene.add(plane);
+
+            camera.position.z = 1000;
+
+            const particles = new THREE.BufferGeometry();
+            const particlePositions = [];
+
+            for (let i = 0; i < 10000; i++) {
+                particlePositions.push(
+                    Math.random() * 2000 - 1000,
+                    Math.random() * 2000 - 1000,
+                    Math.random() * 2000 - 1000
+                );
+            }
+
+            particles.setAttribute('position', new THREE.Float32BufferAttribute(particlePositions, 3));
+
+            const particleMaterial = new THREE.PointsMaterial({ color: 0xADD8E6 });
+            const particleSystem = new THREE.Points(particles, particleMaterial);
+            scene.add(particleSystem);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                particleSystem.rotation.y += 0.001;
+                renderer.render(scene, camera);
+            }
+
+            animate();
+        }
+
+        function hideUnderwaterBackground() {
+            const underwaterBgElement = document.getElementById('underwater-bg');
+            while (underwaterBgElement.firstChild) {
+                underwaterBgElement.removeChild(underwaterBgElement.firstChild);
+            }
+        }
+    </script>
+</body>
+</html>

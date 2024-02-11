@@ -67,11 +67,11 @@ let darkColorOfType = [
     '#000000'
 ]
 
-ClusterLimit = 20
-
+VISIBLE_CLUSTER = 25
+OFFSET = 0
 
 async function loadPokemon() {
-    let urlOfSet = `https://pokeapi.co/api/v2/pokemon/?offset=0&limit=${ClusterLimit}`;
+    let urlOfSet = `https://pokeapi.co/api/v2/pokemon/?offset=${OFFSET}&limit=${VISIBLE_CLUSTER}`;
     let responseSet = await fetch(urlOfSet);
     loadedPokemon = await responseSet.json();
     console.log('loaded Pokemon', loadedPokemon);
@@ -118,7 +118,7 @@ function renderCardHeaders(i, pokemonName) {
 }
 
 function renderCardVisuals(i, currentPokemon) {
-    let artwork = currentPokemon['sprites']['other']['dream_world']['front_default'];
+    let artwork = currentPokemon['sprites']['other']['home']['front_default'];
 
     document.getElementById(`visu-container${i}`).innerHTML = /*HTML*/`
             <img id="pokemonArtwork" class="pokemonArtwork" src="${artwork}" alt="Artwork">            
@@ -152,11 +152,11 @@ async function openCardDetail(i) {
         <div class="card-detail-flex-center">
             <div class="card-detail-container" style="border-color: ${darkColorOfType[indexOfType]}; box-shadow: 0px 0px 40px 20px ${lightColorOfType[indexOfType]};">
                 <div id="card-detail-header" class="card-detail-header" style="background-color: ${darkColorOfType[indexOfType]};">
-                    <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <svg onclick="openPreviousCard(${i})"class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                         <path fill="white" d="M20 11H7.41l3.29-3.29A1 1 0 0 0 9.29 6.29L3.71 11.88a1 1 0 0 0 0 1.41l5.58 5.59a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L7.41 13H20a1 1 0 0 0 0-2z"/>
                     </svg>
-                    <h1>${pokemonName}</h1>
-                    <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <h1 style="color: ${lightColorOfType[indexOfType]};">${pokemonName}</h1>
+                    <svg onclick="openNextCard(${i})" class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                         <path fill="white" d="M14.59 11H4a1 1 0 0 0 0 2h10.59l-3.29 3.29a1 1 0 1 0 1.42 1.42l5.59-5.59a1 1 0 0 0 0-1.42l-5.59-5.59a1 1 0 0 0-1.42 1.42L14.59 11z"/>
                     </svg>
                 </div>
@@ -179,6 +179,19 @@ async function openCardDetail(i) {
     `;
     document.getElementById('cluster-container').classList.add('cluster-blur');
 }
+
+function openNextCard(i) {
+    if (i < ((OFFSET + VISIBLE_CLUSTER) - 1)) {
+        i++;
+        openCardDetail(i);
+        }
+}
+ function openPreviousCard(i) {
+    if (i > OFFSET) {
+        i--;
+        openCardDetail(i);
+        }
+ }
 
 function closeCardDetail() {
     let cardDetail = document.getElementById('card-detail');
