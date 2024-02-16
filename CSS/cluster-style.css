@@ -1,0 +1,168 @@
+.cluster-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-left: 5%;
+    margin-right: 5%;
+    z-index: 1;
+}
+
+.cluster-blur-in {
+    animation: bg-blur-in 1s ease-in forwards
+}
+
+.cluster-blur-out {
+    animation: bg-blur-out 1s ease-in forwards
+}
+
+.pokemon-container {
+    height: 400px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.pokeball-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pokeball-container img {
+    width: 80%;
+    filter: drop-shadow(10px 10px 15px rgba(0, 0, 0, 0.8));
+}
+
+
+.pokemonArtwork{
+    width: 200px;
+    filter: drop-shadow(10px 10px 4px rgba(0, 0, 0, 0.6));
+    z-index: 20;
+    object-fit: cover;
+    position: absolute;
+    transform: translateY(-50px);
+   
+}
+
+
+.pokemon-label {
+    width: 250px;
+    height: 50px;
+    border: 3px solid rgb(100, 100, 100);
+    position: relative;
+    z-index: 10;
+    bottom: 20px;
+    filter: drop-shadow(10px 10px 15px rgba(0, 0, 0, 0.8));
+    box-shadow: 0px -5px 30px 0px rgba(0, 0, 0, 0.8);
+    background-image: linear-gradient( to right bottom, #bcc6cc, #eee, #bcc6cc);
+    background: linear-gradient(to right, rgba(180, 180, 180, 1) 0%, rgba(255, 255, 255, 1) 20%, rgba(160, 160, 160, 1) 60%, rgba(255, 255, 255, 1) 80%,rgba(150, 150, 15
+    0, 1) 100%);
+    color: #9c9c9c;
+    text-shadow: 0 -1px 1px #666666, 0 1px 1px #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow:hidden;
+    text-transform: capitalize;
+}
+.pokemon-label:after {
+        content:'';
+        top:0;
+        transform:translateX(100%) rotate(30deg);
+        width:300%;
+        height:300%;
+        position: absolute;
+        z-index:1;
+        animation: shine 5s infinite ease-in;
+        background:
+          linear-gradient( to right, 
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0.8) 50%,
+            rgba(128,186,232,0) 99%,
+            rgba(128,186,232,0) 100%);
+}
+
+.label-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.type-label-1 {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 50%;
+    left: 4px;
+    top: 4px;
+    z-index: 11;
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+}
+
+.type-label-1:after {
+    content:'';
+    top:0;
+    transform:translateX(100%) rotate(30deg);
+    width:300%;
+    height:300%;
+    position: absolute;
+    z-index:1;
+    animation: shine 3.5s infinite ease-in;
+    background:
+      linear-gradient( to right, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.8) 50%,
+        rgba(128,186,232,0) 99%,
+        rgba(128,186,232,0) 100%);
+}
+
+.type-label-1 img {
+    opacity: 0.4;
+}
+
+.type-label-2 {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 50%;
+    right: 4px;
+    top: 4px;
+    z-index: 11;
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+}
+
+.type-label-2:after {
+    content:'';
+    top:0;
+    transform:translateX(100%) rotate(30deg);
+    width:300%;
+    height:300%;
+    position: absolute;
+    z-index:1;
+    animation: shine 4s infinite ease-in;
+    background:
+      linear-gradient( to right, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.8) 50%,
+        rgba(128,186,232,0) 99%,
+        rgba(128,186,232,0) 100%);
+}
+
+.type-label-2 img {
+    opacity: 0.4;
+}
