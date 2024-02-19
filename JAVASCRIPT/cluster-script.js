@@ -11,6 +11,13 @@ async function renderMainPage() {
 }
 
 async function renderSetOfPokemon(loadedArrayOfPokemon) {
+    let mainContent = document.getElementById('main-content-container')
+
+    mainContent.innerHTML = ``;
+    mainContent.innerHTML = `
+        <div id="cluster-container" class="cluster-container"></div>
+        <div id="load-more-pokemon-container" class="load-more-pokemon-container"><a href="#" onclick="loadMorePokemon()">load more Pokemon</a></div>
+    `;
    for (let i = 0; i < loadedArrayOfPokemon['results'].length; i++) {
         const pokemonResults = loadedArrayOfPokemon['results'][i];
         const pokemonName = pokemonResults['name'];     
@@ -23,6 +30,8 @@ function loadMorePokemon() {
     document.getElementById('cluster-container').innerHTML = '';
     renderMainPage();
 }
+
+
 
 async function renderEachPokemon(pokemonName) {
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
@@ -43,7 +52,7 @@ function buildPokemonCluster(pokemonNumber) {
 }
 
 function renderPokeballs(loadedPokemonInfo, pokemonName, pokemonNumber) {
-    let artwork = loadedPokemonInfo['sprites']['other']['official-artwork']['front_default'];
+    let artwork = loadedPokemonInfo['sprites']['other']['dream_world']['front_default'];
     let type1 = loadedPokemonInfo['types']['0']['type']['name'];
     let indexOfType1 = allTypes.indexOf(loadedPokemonInfo['types']['0']['type']['name']);
     

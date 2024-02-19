@@ -19,7 +19,8 @@
 body {
     height: 100%;
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Comfortaa;
+    font-size: 24px;
     background-color: lightgray;
 }
 
@@ -39,127 +40,6 @@ h1, h2, h3, h4{
 
 
 
-.card-detail-background {
-    height: 100em;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100;
-}
-
-.card-detail-flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-detail-container {
-    position: fixed;
-    top: 12.5%;
-    display: flex;
-    z-index: 110;
-    display: flex;
-    flex-direction: column;
-    height: 75%;
-    max-width: 90%;
-    aspect-ratio: 3/5;
-    border-radius: 20px;
-    border: 2px solid;
-    
-}
-
-.card-detail-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
-    height: 72px;
-    border-radius: 16px 16px 0 0 ;
-    background-color: rgb(32, 32, 32);
-    font-family: ProtestRiot;
-    color: lightgray;
-    text-transform: capitalize;
-}
-
-.arrow {
-    cursor: pointer;
-}
-
-.card-detail-visu-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 500px;
-    overflow: hidden;
-}
-
-.card-detail-visu-container canvas{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100% !important;
-}
-
-.card-detail-pokemonArtwork {
-    width: 90%;
-    z-index: 200;
-    filter: drop-shadow(5px 5px 2px rgba(0, 0, 0, 0.3));
-    position: absolute;
-}
-
-.info-container {
-    background-color: white;
-    height: 400px;
-    margin-top: -32px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.info-navbar {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-    padding-top: 32px;
-    padding-bottom: 32px;
-    background-color: rgb(32, 32, 32);
-    color: lightgray;
-}
-
-.info-navpoint{
-    cursor: pointer;
-    z-index: 1020;
-}
-
-.info-content-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
 
 
 
-
-.nav-card-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    height: 72px;
-    border-radius: 0 0 16px 16px  ;
-    background-color: rgb(32, 32, 32);
-    font-family: ProtestRiot;
-    color: lightgray;
-}
-
-.nav-card-container h2 {
-    cursor: pointer;
-}
-
-.nav-card-container svg {
-    cursor: pointer;
-}

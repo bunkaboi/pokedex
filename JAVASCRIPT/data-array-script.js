@@ -22,54 +22,77 @@ let allTypes = [
 ];
 
 let lightColorOfType = [
-    '#b3ccff',
-    '#d1e0e0',
-    '#b3b3ff',
-    '#ffb3ff',
-    '#e0e0d1',
-    '#d9d9d9',
-    '#c6ecd9',
-    '#ffb3d9',
-    '#a6a6a6',
-    '#ffb3b3',
-    '#b3d1ff',
-    '#c2f0c2',
-    '#fff0b3',
-    '#d1d1e0',
-    '#b3f0ff',
-    '#ecc6c6',
-    '#595959',
-    '#ffb3d9',
-    '#f2f2f2',
-    '#4d4d4d'
+    '#97ada3',//normal-
+    '#71ab8f',//fighting-
+    '#7d9fad',//flying-
+    '#7fcf70',//poison-
+    '#40241d',//ground-
+    '#bababa',//rock-
+    '#4d947a',//bug-
+    '#c2b0bf',//ghost-
+    '#e0e0e0',//steel-
+    '#fc7c7c',//fire-
+    '#8099ff',//water-
+    '#3d7a3d',//grass-
+    '#c2b15d',//electric-
+    '#99ad51',//psychic-
+    '#57abb5',//ice-
+    '#fcab7c',//dragon-
+    '#474747',//dark-
+    '#8954b8',//fairy-
+    '#bf6fbb',//unknown-
+    '#292929'//shadow-
+];
+
+let midColorOfType = [
+    '#7e9188',//normal-
+    '#517a66',//fighting-
+    '#6698ad',//flying-
+    '#56d43d',//poison-
+    '#3b180f',//ground-
+    '#9c9c9c',//rock-
+    '#2b946d',//bug-
+    '#a899a6',//ghost-
+    '#bdbdbd',//steel-
+    '#ff4747',//fire-
+    '#4d70ff',//water-
+    '#237a23',//grass-
+    '#c4ac33',//electric-
+    '#93b02c',//psychic-
+    '#30aab8',//ice-
+    '#ff8945',//dragon-
+    '#383838',//dark-
+    '#7629ba',//fairy-
+    '#8c5189',//unknown-
+    '#171717'//shadow-
 ];
 
 let darkColorOfType = [
-    '#0044cc',
-    '#527a7a',
-    '#0000cc',
-    '#cc00cc',
-    '#7a7a52',
-    '#666666',
-    '#339966',
-    '#cc0066',
-    '#333333',
-    '#cc0000',
-    '#0052cc',
-    '#29a329',
-    '#cca300',
-    '#52527a',
-    '#00a3cc',
-    '#993333',
-    '#1a1a1a',
-    '#cc0066',
-    '#999999',
-    '#000000'
+    '#303b35',//normal-
+    '#263b30',//fighting-
+    '#31657a',//flying-
+    '#198c01',//poison-
+    '#210700',//ground-
+    '#5c5b5b',//rock-
+    '#003d27',//bug-
+    '#665b64',//ghost-
+    '#8c8c8c',//steel-
+    '#8a0000',//fire-
+    '#001878',//water-
+    '#003b00',//grass-
+    '#917a01',//electric-
+    '#769602',//psychic-
+    '#00808f',//ice-
+    '#b54402',//dragon-
+    '#262626',//dark-
+    '#4b008c',//fairy-
+    '#5c355a',//unknown-
+    '#000000'//shadow-
 ];
 
 let loadedArrayOfPokemon;
 
 
-VISIBLE_CLUSTER = 20;
+VISIBLE_CLUSTER = 21;
 
 OFFSET = 0;
