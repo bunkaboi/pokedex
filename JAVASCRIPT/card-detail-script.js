@@ -1,171 +1,238 @@
 
+async function loadAllMoves() {
+    let url = `https://pokeapi.co/api/v2/move?offset=0&limit=937`;
+    let responseAllMoves = await fetch(url);
+    loadedAllMoves = await responseAllMoves.json();
+    console.log('dies sind alle geladenen Moves', loadedAllMoves);
+}
 
-async function renderPokemonDetailsContainer(pokemonNumber) {
+async function openPokemonProfile(pokemonNumber) {
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`;
     let responsePokemon = await fetch(url);
     loadedPokemonInfo = await responsePokemon.json();
 
-    let artwork = loadedPokemonInfo['sprites']['other']['official-artwork']['front_default'];
-    let indexOfType1 = allTypes.indexOf(loadedPokemonInfo['types']['0']['type']['name']);
-
-    if(blurEffectActive()){
-        removeBlurEffect();
-    } else {
-        activateBlurEffect();
-    };
-
-    showCard(artwork, indexOfType1);
-    renderCardContent(loadedPokemonInfo);
+    clearBlurEffectClass();
+    activateBlurInEffect();
+    showProfileContent(loadedPokemonInfo);
 }
 
-function blurEffectActive() {
-    return document.getElementById('cluster-container').classList.contains('cluster-blur-out');
-}
-
-function removeBlurEffect() {
-    return document.getElementById('cluster-container').classList.remove('cluster-blur-out');
-}
-function activateBlurEffect() {
-    return document.getElementById('cluster-container').classList.add('cluster-blur-in');
-}
-
-function closeCard(indexOfType1) {
-    document.getElementById('cluster-container').classList.remove('cluster-blur-in');
-    document.getElementById('cluster-container').classList.add('cluster-blur-out');
-    document.getElementById('card-pokemon-image').style = 'animation: close-card-pokemon 2s ease-in-out forwards;';
-    document.getElementById('card-pokemon-information').style = `background-color: ${lightColorOfType[indexOfType1]}; border-color: ${darkColorOfType[indexOfType1]}; animation: close-card-information 2s ease-in-out forwards;`;
-    setTimeout(hidePokemonDetailContainer, 2000);
-}
-
-function showCard(artwork, indexOfType1) {
-    let pokemonDetailsContainer = document.getElementById('pokemon-details-container');
-
-    pokemonDetailsContainer.style = "z-index: 202;"
-    pokemonDetailsContainer.innerHTML = /*HTML*/`
-    <div id="card-pokemon-image" class="card-pokemon-image-container">
-        <img src="${artwork}" class="pokemon-image">
-    </div>
-    <div id="card-pokemon-information" class="card-pokemon-information-container" style="border-color: ${darkColorOfType[indexOfType1]}; background-color: ${midColorOfType[indexOfType1]};"></div>
-    `;
-}
-
-function hidePokemonDetailContainer() {
-    document.getElementById('pokemon-details-container').style = "z-index: 0;";
-}
-
-function renderCardContent(loadedPokemonInfo) {
-    let pokemonInfo = document.getElementById('card-pokemon-information');
+function showProfileContent(loadedPokemonInfo) {
     let height = Math.round(loadedPokemonInfo['height'] * 30.48);
     let weight = Math.round(loadedPokemonInfo['weight'] * 0.453592);
     let experience = loadedPokemonInfo['base_experience']
     let name = loadedPokemonInfo['species']['name'];
     name = name.toUpperCase();
-    let type1 = loadedPokemonInfo['types']['0']['type']['name'];
-    let indexOfType1 = allTypes.indexOf(loadedPokemonInfo['types']['0']['type']['name']);
+    let artwork = loadedPokemonInfo['sprites']['other']['official-artwork']['front_default'];
+    let indexOfType = allTypes.indexOf(loadedPokemonInfo['types']['0']['type']['name']);
     let pokemonNumber = loadedPokemonInfo['id'];
 
-    let stats = loadedPokemonInfo['stats'];
-    let pokePic = loadedPokemonInfo['sprites']['other']['official-artwork']['front_default'];
+    createProfileContainer(indexOfType);
+
+    let pokemonInfo = document.getElementById('pokemon-profile-information');
     
-    showPokemonName(pokemonInfo, name, indexOfType1);
-    showNavbar(pokemonInfo, height, weight, indexOfType1, pokemonNumber, experience);
-    createInfoContainer(pokemonInfo, indexOfType1);
-    showDirection(pokemonInfo, indexOfType1, pokemonNumber);
-    renderAbout(height, weight, indexOfType1, experience);
+    renderPokemonImage(artwork);
+    renderPokemonName(pokemonInfo, name, indexOfType);
+    renderNavbar(pokemonInfo, height, weight, indexOfType, pokemonNumber, experience);
+    createInfoContainer(pokemonInfo, indexOfType);
+    renderDirection(pokemonInfo, indexOfType, pokemonNumber);
+    showAbout(height, weight, indexOfType, experience);
 }
 
-function showPokemonName(pokemonInfo, name, indexOfType1) {
-    return pokemonInfo.innerHTML = /*HTML*/`
-    <div id="pokemon-name" class="pokemon-name" style="background-color: ${darkColorOfType[indexOfType1]};">${name}</div>
+function renderNavbar(pokemonInfo, height, weight, indexOfType, pokemonNumber, experience) {
+    return  pokemonInfo.innerHTML += /*HTML*/`   
+            <div id="navbar-container" class="navbar-container" style="background: linear-gradient( to bottom,${darkColorOfType[indexOfType]} 0%,${lightColorOfType[indexOfType]} 50%,${darkColorOfType[indexOfType]} 100%);">
+                <a href="#" id="about" onclick="showAbout(${height}, ${weight}, ${indexOfType}, ${experience})">Über</a>
+                <a href="#" id="stats" onclick="showStats(${indexOfType})">Angaben</a>
+                <a href="#" id="abilities" onclick="showAbilities(${pokemonNumber}, ${indexOfType});">Fähigkeiten</a>
+                <a href="#" id="moves" onclick="showMoves(${pokemonNumber}, ${indexOfType});">Attacken</a>
+            </div>
     `;
 }
 
-function showNavbar(pokemonInfo, height, weight, indexOfType1, pokemonNumber, experience) {
-    return pokemonInfo.innerHTML += /*HTML*/`   
-    <div id="navbar-container" class="navbar-container" style="background: linear-gradient( to bottom,${darkColorOfType[indexOfType1]} 0%,${lightColorOfType[indexOfType1]} 50%,${darkColorOfType[indexOfType1]} 100%);">
-        <a href="#" id="about" onclick="renderAbout(${height}, ${weight}, ${indexOfType1}, ${experience})">Über</a>
-        <a href="#" id="stats" onclick="renderStats(${indexOfType1})">Angaben</a>
-        <a href="#" id="abilities" onclick="renderPokemonAbilities(${pokemonNumber}, ${indexOfType1});">Fähigkeiten</a>
-        <a href="#" id="moves" onclick="renderPokemonMoves(${pokemonNumber});">Attacken</a>
-    </div>
-    `;
-}
-
-function createInfoContainer(pokemonInfo, indexOfType1) {
-    return pokemonInfo.innerHTML += /*HTML*/`
-    <div id="pokemon-infos" class="pokemon-infos-container" style="background-color: ${lightColorOfType[indexOfType1]};"></div>
-    `;
-}
-
-function showDirection(pokemonInfo, indexOfType1, pokemonNumber) {
-    return pokemonInfo.innerHTML += /*HTML*/`
-    <div id="direction-container" class="direction-container" style="background-color: ${darkColorOfType[indexOfType1]};">
-        <svg onclick="openPreviousCard(${pokemonNumber})"class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="white" d="M20 11H7.41l3.29-3.29A1 1 0 0 0 9.29 6.29L3.71 11.88a1 1 0 0 0 0 1.41l5.58 5.59a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L7.41 13H20a1 1 0 0 0 0-2z"/>
-        </svg>
-        <a href="#" onclick="closeCard(${indexOfType1})">schliessen</a>
-        <svg onclick="openNextCard(${pokemonNumber})" class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="white" d="M14.59 11H4a1 1 0 0 0 0 2h10.59l-3.29 3.29a1 1 0 1 0 1.42 1.42l5.59-5.59a1 1 0 0 0 0-1.42l-5.59-5.59a1 1 0 0 0-1.42 1.42L14.59 11z"/>
-        </svg>
-    </div>
-    `;
-}
-
-async function openNextCard(pokemonNumber) {
-    if (pokemonNumber < ((OFFSET + VISIBLE_CLUSTER) - 1)) {
-        pokemonNumber++;
-        renderPokemonDetailsContainer(pokemonNumber);
-    }
-}
-
- function openPreviousCard(pokemonNumber) {
-    if (pokemonNumber < ((OFFSET + VISIBLE_CLUSTER) - 1)) {
-        pokemonNumber--;
-        renderPokemonDetailsContainer(pokemonNumber);
-        }
-}
-
-
-//bis hierhin refactored
-
-function renderAbout(height, weight, indexOfType1, experience) {
+function showAbout(height, weight, indexOfType, experience) {
     let infoContainer = document.getElementById('pokemon-infos');
 
     infoContainer.innerHTML = ``;
-    infoContainer.innerHTML = /*HTML*/`  
-    <div class="info-container">
-        <div class="info-name">
-            <div>Erfahrung:</div>
-        </div>
-        <div class="info-text" style="background-color: ${darkColorOfType[indexOfType1]};">
-            <div><b>${experience}</b></div>
-        </div>
-    </div>
-    <div class="info-container">
-        <div class="info-name">
-            <div>Größe:</div>
-        </div>
-        <div class="info-text" style="background-color: ${darkColorOfType[indexOfType1]};">
-            <div><b>${height} cm</b></div>
-        </div>
-    </div>
-    <div class="info-container">
-        <div class="info-name">
-            <div>Gewicht:</div>
-            </div>
-        <div class="info-text" style="background-color: ${darkColorOfType[indexOfType1]};">
-            <div><b>${weight} Kg</b></div>
-        </div>
-    </div>
-    `;
-        renderPokemonTypes(loadedPokemonInfo, indexOfType1);    
+    renderExperience(infoContainer, indexOfType, experience);
+    renderHeight(infoContainer, indexOfType, height);
+    renderWeight(infoContainer, indexOfType, weight);
+    renderTypes(loadedPokemonInfo, indexOfType);    
+}
+
+async function showStats(indexOfType) {
+    let stats = loadedPokemonInfo['stats'];
+    let infoContainer = document.getElementById('pokemon-infos');
+
+    infoContainer.innerHTML = ``;
+    createStatsContainer(infoContainer);
+
+    let infoStatContainer = document.getElementById('info-stat-content-container');
+    await renderStats(stats, infoStatContainer, indexOfType);
+}
+
+async function showAbilities(pokemonNumber, indexOfType) {
+    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`;
+    let responsePokemon = await fetch(url);
+    loadedPokemonInfo = await responsePokemon.json();
+
+    let infoContainer = document.getElementById('pokemon-infos');
+    
+    infoContainer.innerHTML = ``;
+    await renderAbilities(loadedPokemonInfo, infoContainer, indexOfType);
 }
 
 
 
-async function renderPokemonTypes(loadedPokemonInfo, indexOfType1) {
 
+async function showMoves(pokemonNumber, indexOfType) {
+    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`;
+    let responsePokemon = await fetch(url);
+    loadedPokemonInfo = await responsePokemon.json();
 
+    let infoContainer = document.getElementById('pokemon-infos');
+    let moves = loadedPokemonInfo['moves'];
+    let pokemonName = loadedPokemonInfo['name'];
+    pokemonName = pokemonName.toUpperCase();
+    
+    infoContainer.innerHTML = ``;
+    createScrollContainer(infoContainer);
+    await renderMoves(moves, indexOfType, pokemonName);
+}
+
+// Funktionen für Buttons/Links
+
+async function openNextCard(pokemonNumber, indexOfType) {
+    if (pokemonNumber < ((OFFSET + VISIBLE_CLUSTER) - 1)) {
+        pokemonNumber++;
+        setCloseAnimation(indexOfType); 
+        setTimeout(openPokemonProfile, 500, pokemonNumber);
+    }
+}
+
+ function openPreviousCard(pokemonNumber, indexOfType) {
+    if (pokemonNumber < ((OFFSET + VISIBLE_CLUSTER) - 1)) {
+        pokemonNumber--;
+        setCloseAnimation(indexOfType); 
+        setTimeout(openPokemonProfile, 500, pokemonNumber);
+        }
+}
+
+function closeCard(indexOfType) {
+    clearBlurEffectClass();
+    activateBlurOutEffect();
+    setCloseAnimation(indexOfType);
+    setTimeout(profileToBackground, 1000);
+}
+
+//returns und ausgelagertes
+
+function setCloseAnimation(indexOfType) {
+    document.getElementById('pokemon-profile-image').style = 'animation: close-card-pokemon 1s ease-in-out forwards;';
+    document.getElementById('pokemon-profile-information').style = `background-color: ${midColorOfType[indexOfType]}; border-color: ${darkColorOfType[indexOfType]}; animation: close-card-information 1s ease-in-out forwards;`;
+}
+
+function clearBlurEffectClass() {
+    if(document.getElementById('cluster-container').classList.contains('cluster-blur-out')){
+        return document.getElementById('cluster-container').classList.remove('cluster-blur-out');
+    };
+    if(document.getElementById('cluster-container').classList.contains('cluster-blur-in')){
+        document.getElementById('cluster-container').classList.remove('cluster-blur-in');
+    };
+}
+
+function activateBlurInEffect() {
+    return document.getElementById('cluster-container').classList.add('cluster-blur-in');
+}
+
+function activateBlurOutEffect() {
+    return document.getElementById('cluster-container').classList.add('cluster-blur-out');
+}
+
+function profileToBackground() {
+    document.getElementById('pokemon-profile-container').style = "z-index: 0;";
+}
+
+function createProfileContainer(indexOfType) {
+    let pokemonDetailsContainer = document.getElementById('pokemon-profile-container');
+    pokemonDetailsContainer.style = "z-index: 202;"
+    pokemonDetailsContainer.innerHTML = /*HTML*/`
+    <div id="pokemon-profile-image" class="pokemon-image-container"></div>
+    <div id="pokemon-profile-information" class="pokemon-profile-information-container" style="border-color: ${darkColorOfType[indexOfType]}; background-color: ${midColorOfType[indexOfType]};"></div>
+    `;
+}
+
+function renderPokemonImage(artwork) {
+    return  document.getElementById('pokemon-profile-image').innerHTML = /*HTML*/`
+            <img src="${artwork}" class="pokemon-image">
+            `;
+}
+
+function renderPokemonName(pokemonInfo, name, indexOfType) {
+    return  pokemonInfo.innerHTML = /*HTML*/`
+            <div id="pokemon-name" class="pokemon-name" style="background-color: ${darkColorOfType[indexOfType]};">${name}</div>
+            `;
+}
+
+function createInfoContainer(pokemonInfo, indexOfType) {
+    return  pokemonInfo.innerHTML += /*HTML*/`
+            <div id="pokemon-infos" class="pokemon-infos-container" style="background-color: ${lightColorOfType[indexOfType]};"></div>
+            `;
+}
+
+function renderDirection(pokemonInfo, indexOfType, pokemonNumber) {
+    return  pokemonInfo.innerHTML += /*HTML*/`
+            <div id="direction-container" class="direction-container" style="background-color: ${darkColorOfType[indexOfType]};">
+                <svg onclick="openPreviousCard(${pokemonNumber}, ${indexOfType})"class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="white" d="M20 11H7.41l3.29-3.29A1 1 0 0 0 9.29 6.29L3.71 11.88a1 1 0 0 0 0 1.41l5.58 5.59a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L7.41 13H20a1 1 0 0 0 0-2z"/>
+                </svg>
+                <a href="#" onclick="closeCard(${indexOfType})">schliessen</a>
+                <svg onclick="openNextCard(${pokemonNumber}, ${indexOfType})" class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="white" d="M14.59 11H4a1 1 0 0 0 0 2h10.59l-3.29 3.29a1 1 0 1 0 1.42 1.42l5.59-5.59a1 1 0 0 0 0-1.42l-5.59-5.59a1 1 0 0 0-1.42 1.42L14.59 11z"/>
+                </svg>
+            </div>
+            `;
+}
+
+function renderExperience(infoContainer, indexOfType, experience) {
+    return  infoContainer.innerHTML += /*HTML*/`  
+            <div class="info-container">
+                <div class="info-name">
+                    <div>Erfahrung:</div>
+                </div>
+                <div class="info-text" style="background-color: ${darkColorOfType[indexOfType]};">
+                    <div><b>${experience}</b></div>
+                </div>
+            </div>
+            `;
+}
+
+function renderHeight(infoContainer, indexOfType, height) {
+    return  infoContainer.innerHTML += /*HTML*/`  
+            <div class="info-container">
+                <div class="info-name">
+                    <div>Größe:</div>
+                </div>
+                <div class="info-text" style="background-color: ${darkColorOfType[indexOfType]};">
+                    <div><b>${height} cm</b></div>
+                </div>
+            </div>
+            `;
+}
+
+function renderWeight(infoContainer, indexOfType, weight) {
+    return  infoContainer.innerHTML += /*HTML*/`  
+            <div class="info-container">
+                <div class="info-name">
+                    <div>Gewicht:</div>
+                    </div>
+                <div class="info-text" style="background-color: ${darkColorOfType[indexOfType]};">
+                    <div><b>${weight} Kg</b></div>
+                </div>
+            </div>
+            `;
+}
+
+async function renderTypes(loadedPokemonInfo, indexOfType) {
     let infoContainer = document.getElementById('pokemon-infos');
     let typesOfPokemon = loadedPokemonInfo['types'];
     
@@ -180,34 +247,66 @@ async function renderPokemonTypes(loadedPokemonInfo, indexOfType1) {
         let typeNameGerman = loadedTypes['names']['4']['name']
         let typeNumber = i + 1
 
-        infoContainer.innerHTML += /*HTML*/`
-        <div class="info-container">
-            <div class="info-name">
-                <div>Typ ${typeNumber}:</div>
-            </div>
-            <div class="info-text" style="background-color: ${darkColorOfType[indexOfType1]};">
-                <div><b>${typeNameGerman}</b></div>
-            </div>
-        </div>
-        `;
-        
+        createTypes(infoContainer, typeNumber, indexOfType, typeNameGerman);
     }
-
-
-
 }
 
+function createTypes(infoContainer, typeNumber, indexOfType, typeNameGerman) {
+    return  infoContainer.innerHTML += /*HTML*/`
+            <div class="info-container">
+                <div class="info-name">
+                    <div>Typ ${typeNumber}:</div>
+                </div>
+                <div class="info-text" style="background-color: ${darkColorOfType[indexOfType]};">
+                    <div><b>${typeNameGerman}</b></div>
+                </div>
+            </div>
+            `;
+}
 
+function createStatsContainer(infoContainer) {
+    return  infoContainer.innerHTML = /*HTML*/`
+            <div id="info-stat-content-container"></div>
+            `;
+}
 
-async function renderPokemonAbilities(pokemonNumber, indexOfType1) {
-    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`;
-    let responsePokemon = await fetch(url);
-    loadedPokemonInfo = await responsePokemon.json();
+async function renderStats(stats, infoStatContainer, indexOfType) {
+    for (let i = 0; i  < stats.length; i++) {
+        const statsNumber = stats[i];
 
-    let infoContainer = document.getElementById('pokemon-infos');
+        let urlStatArray = statsNumber['stat']['url'];
+        let responseStatArray = await fetch(urlStatArray);
+
+        loadedStatArray = await responseStatArray.json();
+        console.log('geladene StatArray', loadedStatArray);
+
+        statNameGerman = loadedStatArray['names']['4']['name'];
+        createStats(infoStatContainer, statNameGerman, indexOfType, statsNumber);
+    }
+}
+
+function createStats(infoStatContainer, statNameGerman, indexOfType, statsNumber) {
+    return  infoStatContainer.innerHTML += /*HTML*/`
+            <div class="info-container">
+                <div id="stat-Name" class="info-name">
+                    <div>${statNameGerman}:</div>
+                </div>
+                <div id="stat-Value">
+                    <div class="stat-bar-container">
+                        <div id="stat-bar" class="stat-bar" style="border-color: ${darkColorOfType[indexOfType]}; background-color: ${midColorOfType[indexOfType]};">
+                            <div class="stat-bar-progress" style="width: ${statsNumber['base_stat']/0.7}px; background-color: ${darkColorOfType[indexOfType]};">
+                                ${statsNumber['base_stat']}&nbsp;&nbsp;
+                            </div>
+                            255&nbsp;&nbsp;
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            `;
+}
+
+async function renderAbilities(loadedPokemonInfo, infoContainer, indexOfType) {
     let abilities = loadedPokemonInfo['abilities'];
-    
-    infoContainer.innerHTML = ``;
 
     for (let i = 0; i < abilities.length; i++) {
         const abilityArr = abilities[i];
@@ -221,20 +320,21 @@ async function renderPokemonAbilities(pokemonNumber, indexOfType1) {
         
         let abilityFlavorGerman = loadedAbilities['flavor_text_entries'][nr]['flavor_text'];
         let abilityNameGerman = loadedAbilities['names']['4']['name'];
+        createAbilities(infoContainer, abilityNameGerman, indexOfType, abilityFlavorGerman);; 
+    };
+}
 
-
-        infoContainer.innerHTML += /*HTML*/`
+function createAbilities(infoContainer, abilityNameGerman, indexOfType, abilityFlavorGerman) {
+    return  infoContainer.innerHTML += /*HTML*/`
             <div class="info-container">
                 <div class="info-name">
                     ${abilityNameGerman}
                 </div>
-                <div class="info-text" style="background-color: ${darkColorOfType[indexOfType1]};">
+                <div class="info-text" style="background-color: ${darkColorOfType[indexOfType]};">
                     ${abilityFlavorGerman}
                 </div>
             </div>
-        `;
-    };
-
+            `;
 }
 
 async function getNumberAbilityLanguage(loadedAbilities) {
@@ -244,247 +344,50 @@ async function getNumberAbilityLanguage(loadedAbilities) {
         return number + 1;
 }
 
-async function renderStats(indexOfType1) {
-    let stats = loadedPokemonInfo['stats'];
-    let infoContainer = document.getElementById('pokemon-infos');
-
-    infoContainer.innerHTML = ``;
-
-    infoContainer.innerHTML = /*HTML*/`
-    <div id="info-stat-content-container"></div>
-    `;
-
-    let infoStatContainer = document.getElementById('info-stat-content-container');
-
-    for (let i = 0; i  < stats.length; i++) {
-        const statsNumber = stats[i];
-
-        let urlStatArray = statsNumber['stat']['url'];
-        let responseStatArray = await fetch(urlStatArray);
-        loadedStatArray = await responseStatArray.json();
-        console.log('geladene StatArray', loadedStatArray);
-
-        statNameGerman = loadedStatArray['names']['4']['name'];
-
-        infoStatContainer.innerHTML += /*HTML*/`
-        <div class="info-container">
-            <div id="stat-Name" class="info-name">
-                <div>${statNameGerman}:</div>
-            </div>
-            <div id="stat-Value">
-                <div class="stat-bar-container">
-                    <div id="stat-bar" class="stat-bar" style="border-color: ${darkColorOfType[indexOfType1]}; background-color: ${midColorOfType[indexOfType1]};">
-                        <div class="stat-bar-progress" style="width: ${statsNumber['base_stat']/0.7}px; background-color: ${darkColorOfType[indexOfType1]};">
-                            ${statsNumber['base_stat']}&nbsp;&nbsp;
-                        </div>
-                        255&nbsp;&nbsp;
-                    </div>
-                </div> 
-            </div>
-        </div>
-        `;
-    }
-}
-
-async function renderPokemonMoves(pokemonNumber) {
-    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`;
-    let responsePokemon = await fetch(url);
-    loadedPokemonInfo = await responsePokemon.json();
-
-    let infoContainer = document.getElementById('pokemon-infos');
-    let moves = loadedPokemonInfo['moves'];
-    
-    var x = 0;
-    var y = 30;
-
-    infoContainer.innerHTML = ``;
-    infoContainer.innerHTML = /*HTML*/`
-    <div id="info-container-wrap" class="info-container-wrap"></div>
-    <div id="prev-next" class="prev-next">
-        <a href="#" id="prev" class="prev">
-            <<
-        </a>
-        <a href="#" id="next" class="next" onclick="nextThirty()">
-            >>
-        </a>
-    </div>
-    `;
-
-
-    for (let i = x; i < y; i++) {
+async function renderMoves(moves, indexOfType, pokemonName) {
+    for (let i = 0; i < moves.length; i++) {
         const movesArr = moves[i];
 
         let urlMove = movesArr['move']['url'];
         let responseMove = await fetch(urlMove);
         loadedMove = await responseMove.json();
         console.log('geladene Moves', loadedMove);
-               
+            
         let moveNameGerman = loadedMove['names']['4']['name'];
 
-        document.getElementById('info-container-wrap').innerHTML += /*HTML*/`
-            
-                <div class="info-name-bubble">
-                    ${moveNameGerman}
-                </div>
-            
-        `;
+        createMoves(moveNameGerman);
+
+        progressLoadMoves(indexOfType, pokemonName, moves, i);
     };
-
 }
 
-function nextThirty() {
-  
+function createScrollContainer(infoContainer) {
+    return  infoContainer.innerHTML = /*HTML*/`
+            <div id="loading-bar" class="info-text"></div>
+            <div id="info-container-wrap" class="info-container-wrap"></div> 
+            `;
+            document.getElementById('info-container-wrap').scrollIntoView();
 }
 
-
-
-
-
-
-
-//alles vergessen - wir machen neu, anders, besser (Überlegung den Haupthintergrund zu animieren)
-function openCardDetailAnimation(i) {
-    document.getElementById(`pokemonArtwork${i}`).style.animation = 'openCard 2s ease-in forwards';
-    setTimeout(openCardDetail, 1500, i);
-}
-
-function backInPokeball(i) {
-    document.getElementById(`pokemonArtwork${i}`).style.animation = 'backInPokeball 1s ease-in-out forwards';
-    setTimeout(removeCardDetailAnimation, 1000, i);
-}
-
-function removeCardDetailAnimation(i) {
-    document.getElementById(`pokemonArtwork${i}`).style.animation = '';
-}
-
-async function openCardDetail(i) {
-    let pokemonResults = loadedArrayOfPokemon['results'][i];
-    let pokemonName = pokemonResults['name'];
-
-    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
-    let responsePokemon = await fetch(url);
-    loadedPokemonInfo = await responsePokemon.json();
-    let pokemonImage = loadedPokemonInfo['sprites']['other']['official-artwork']['front_default'];
-
-    let cardDetail = document.getElementById('card-detail');
-    
-
-    let indexOfType = allTypes.indexOf(loadedPokemonInfo['types']['0']['type']['name']);
-
-    cardDetail.innerHTML = /*HTML*/`
-        <div class="card-detail-background" onclick="closeCardDetail(${i})"></div>
-        <div class="card-detail-flex-center">
-            <div class="card-detail-container" style="box-shadow: 0px 0px 40px 20px ${darkColorOfType[indexOfType]};">
-                <div id="card-detail-header" class="card-detail-header">
-                    <h1>${pokemonName}</h1>
-                </div>
-
-                <div id="card-detail-pokemon-container" class="card-detail-pokemon-container">
-                    <img id="card-detail-pokemonArtwork${i}" class="card-detail-pokemonArtwork" src="${pokemonImage}" alt="Artwork">           
-                    
-                </div>
-
-                <div class="info-container">
-                    <div class="info-navbar">
-                        <div id="info-navpoint-1" class="info-navpoint" onclick="renderAbout(${indexOfType})">About</div>
-                        <div id="info-basestats" class="info-navpoint" onclick="renderBaseStats(${indexOfType})">Base Stats</div>
-                        <div id="info-ability" class="info-navpoint" onclick="renderAbility(${indexOfType})">Ability</div>
-                        <div id="info-moves" class="info-navpoint" onclick="renderMoves(${indexOfType})">Moves</div>
-                    </div>
-                    <div id="info-content-container" class="info-content-container"></div>
-                </div>
-                <div class="nav-card-container">
-                    <svg onclick="openPreviousCard(${i})"class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                        <path fill="white" d="M20 11H7.41l3.29-3.29A1 1 0 0 0 9.29 6.29L3.71 11.88a1 1 0 0 0 0 1.41l5.58 5.59a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L7.41 13H20a1 1 0 0 0 0-2z"/>
-                    </svg>
-                    <h2 onclick="closeCardDetail(${i})">schliessen</h2>
-                    <svg onclick="openNextCard(${i})" class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                        <path fill="white" d="M14.59 11H4a1 1 0 0 0 0 2h10.59l-3.29 3.29a1 1 0 1 0 1.42 1.42l5.59-5.59a1 1 0 0 0 0-1.42l-5.59-5.59a1 1 0 0 0-1.42 1.42L14.59 11z"/>
-                    </svg>
-                </div>
+function createMoves(moveNameGerman) {
+    return  document.getElementById('info-container-wrap').innerHTML += /*HTML*/`          
+            <div class="info-move-name">
+                ${moveNameGerman}
             </div>
-        </div>
-    `;
-    animatedBackground(indexOfType);
-    document.getElementById('cluster-container').classList.add('cluster-blur');
-    renderAbout();
-   
+            `;
 }
 
+function progressLoadMoves(indexOfType, pokemonName, moves, i) {
+    let progress = ((i + 1) / moves.length) * 100
+        if(i + 1 < moves.length){
+        document.getElementById('loading-bar').style = `width: ${progress}%; background-color: ${darkColorOfType[indexOfType]};`;
 
-
-
-function closeCardDetail(i) {
-    let cardDetail = document.getElementById('card-detail');
-    cardDetail.innerHTML = ``;
-    document.getElementById('cluster-container').classList.remove('cluster-blur');
-    backInPokeball(i);
-}
-
-
-
-function renderBaseStats(indexOfType) {
-    let stats = loadedPokemonInfo['stats'];
-    let infoContainer = document.getElementById('info-content-container');
-
-    infoContainer.innerHTML = ``;
-
-    infoContainer.innerHTML = /*HTML*/`
-        <div id="info-stat-content-container"></div>
+        document.getElementById('loading-bar').innerHTML = /*HTML*/`
+        ${i+1} Attacken von ${pokemonName} geladen
         `;
-
-    let infoStatContainer = document.getElementById('info-stat-content-container');
-
-    let counter = 0;
-
-    for (let i = 0; i  < stats.length; i++) {
-        const statsNumber = stats[i];
-
-        infoStatContainer.innerHTML += /*HTML*/`
-        <div class="info-content-row">
-            <div id="stat-Name" class="info-text">
-                <div>${statsNumber['stat']['name']}:</div>
-            </div>
-            <div id="stat-Value" class="info-text">
-                <div><b>${statsNumber['base_stat']} / 255</b></div>
-            </div>
-            <div class="stat-bar-container">
-                <div id="stat-bar" class="stat-bar" style="background-color: ${lightColorOfType[indexOfType]};">
-                    <div class="stat-bar-progress" style="width: ${statsNumber['base_stat']}px; background-color: ${darkColorOfType[indexOfType]};"></div>
-                </div>
-            </div> 
-        </div>
+        } else {
+        document.getElementById('loading-bar').innerHTML = /*HTML*/`
+        ${moves.length} Attacken von ${pokemonName}
         `;
-    }
-
-}
-
-function renderAbility() {
-    let abilities = loadedPokemonInfo['abilities'];
-    let infoContainer = document.getElementById('info-content-container');
-
-    infoContainer.innerHTML = ``;
-
-    for (let i = 0; i < abilities.length; i++) {
-        const abilityArr = abilities[i];
-
-        infoContainer.innerHTML += /*HTML*/`
-            <div class="info-text">${abilityArr['ability']['name']}</div>
-        `;
-        
-    }
-}
-
-
-async function renderMainFooter() {
-    let mainFooter = document.getElementById('footer-type-container');
-
-    for (let i = 0; i < allTypes.length; i++) {
-        const typeName = allTypes[i];
-        mainFooter.innerHTML += /*HTML*/`
-        <div class="descripeType">
-            <div>${typeName}: </div><img src="./img/${typeName}.png" alt="">
-        </div>
-        `;
-    }
+        }
 }

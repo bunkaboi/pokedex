@@ -1,37 +1,12 @@
-
-@keyframes openCard { 
-    0% {
-        width: 200px;
-    }
-    75% {
-        width: 300px;
-    }
-    100% {
-        width: 0px;
-    }
-  }
-
-  @keyframes backInPokeball { 
-    0% {
-        width: 0px;
-    }
-    75% {
-        width: 300px;
-    }
-    100% {
-        width: 200px;
-    }
-  }
-
-  @keyframes shine { 
+@keyframes shine { 
     0% {
         transform:translateX(-100%) translateY(-100%) rotate(30deg);
     }
     80% {transform:translateX(-100%) translateY(-100%) rotate(30deg);}
       100% {transform:translateX(100%) translateY(100%) rotate(30deg);}
-  }
+}
 
-  @keyframes fillProgress { 
+@keyframes fillProgress { 
     0% {
         width: 0px;
     }
@@ -41,9 +16,9 @@
     100% {
         width: '';
     }
-  }
+}
 
-  @keyframes open-card-pokemon {
+@keyframes open-card-pokemon {
     0% {
         transform: translateX(-1500px);
     }
@@ -54,10 +29,10 @@
 
 @keyframes close-card-pokemon {
     0% {
-        transform: translateX(0px);
+        transform: translateY(0px);
     }
     100% {
-        transform: translateX(-1500px);
+        transform: translateY(-1500px);
     }
 }
 
@@ -72,10 +47,10 @@
 
 @keyframes close-card-information {
     0% {
-        transform: translateX(0px);
+        transform: translateY(0px);
     }
     100% {
-        transform: translateX(2000px);
+        transform: translateY(1500px);
     }
 }
 

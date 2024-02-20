@@ -1,3 +1,7 @@
+VISIBLE_CLUSTER = 20;
+
+OFFSET = 0;
+
 async function getClusterOfPokemon() {
     let urlOfSet = `https://pokeapi.co/api/v2/pokemon/?offset=${OFFSET}&limit=${VISIBLE_CLUSTER}`;
     let responseSet = await fetch(urlOfSet);
@@ -14,10 +18,14 @@ async function renderSetOfPokemon(loadedArrayOfPokemon) {
     let mainContent = document.getElementById('main-content-container')
 
     mainContent.innerHTML = ``;
-    mainContent.innerHTML = `
+    mainContent.innerHTML = /*HTML*/`
         <div id="cluster-container" class="cluster-container"></div>
-        <div id="load-more-pokemon-container" class="load-more-pokemon-container"><a href="#" onclick="loadMorePokemon()">load more Pokemon</a></div>
-    `;
+        <div id="loading-direction" class="loading-direction-container">
+        <a href="#" class="load-pokemon" onclick="loadPreviousPokemon()"><<<</a>
+        <div>${OFFSET + 1}-${OFFSET + VISIBLE_CLUSTER} / ${loadedArrayOfPokemon['count']}</div>
+        <a href="#" class="load-pokemon" onclick="loadMorePokemon()">>>></a>
+        </div>
+        `;
    for (let i = 0; i < loadedArrayOfPokemon['results'].length; i++) {
         const pokemonResults = loadedArrayOfPokemon['results'][i];
         const pokemonName = pokemonResults['name'];     
@@ -25,13 +33,19 @@ async function renderSetOfPokemon(loadedArrayOfPokemon) {
     };
 }
 
-function loadMorePokemon() {
-    VISIBLE_CLUSTER = VISIBLE_CLUSTER + 20;
-    document.getElementById('cluster-container').innerHTML = '';
+async function loadMorePokemon() {
+    OFFSET = OFFSET + VISIBLE_CLUSTER;
+    
+    document.getElementById('cluster-container').innerHTML += '';
     renderMainPage();
 }
 
-
+async function loadPreviousPokemon() {
+    OFFSET = OFFSET -20;
+    
+    document.getElementById('cluster-container').innerHTML += '';
+    renderMainPage();
+}
 
 async function renderEachPokemon(pokemonName) {
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
@@ -47,7 +61,7 @@ async function renderEachPokemon(pokemonName) {
 
 function buildPokemonCluster(pokemonNumber) {
     document.getElementById('cluster-container').innerHTML += /*HTML*/`
-    <div id="pokemon-container${pokemonNumber}" class="pokemon-container" onclick="renderPokemonDetailsContainer(${pokemonNumber})"></div>
+    <div id="pokemon-container${pokemonNumber}" class="pokemon-container" onclick="openPokemonProfile(${pokemonNumber})"></div>
 `;
 }
 
@@ -117,6 +131,7 @@ async function searchPokemon () {
         pokemonName = search;
         
         document.getElementById('cluster-container').innerHTML = ``;
+        document.getElementById('loading-direction').innerHTML = ``;
         renderEachPokemon(pokemonName);
     };
 }

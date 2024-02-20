@@ -93,6 +93,3 @@ let darkColorOfType = [
 let loadedArrayOfPokemon;
 
 
-VISIBLE_CLUSTER = 21;
-
-OFFSET = 0;

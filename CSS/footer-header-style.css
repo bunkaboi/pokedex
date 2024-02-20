@@ -1,5 +1,6 @@
 .main-header-container {
     min-height: 80px;
+    width: 100%;
     height: 80px;
     background-color: rgb(70, 70, 70);
     box-shadow: 0px 4px 8px rgb(100, 100, 100);
@@ -9,7 +10,7 @@
     align-items: center;
     position: static;
     top: 0;
-    z-index: 300
+    z-index: 3000;
 }
 
 .main-footer-container {
@@ -21,7 +22,7 @@
     align-items: center;
     position: static;
     bottom: 0;
-    z-index: 300;
+    z-index: 3000;
 }
 
 .footer-type-container {

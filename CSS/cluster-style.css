@@ -38,7 +38,6 @@
     filter: drop-shadow(10px 10px 15px rgba(0, 0, 0, 0.8));
 }
 
-
 .pokemonArtwork{
     height: 150px;
     filter: drop-shadow(10px 10px 4px rgba(0, 0, 0, 0.6));
@@ -46,9 +45,8 @@
     object-fit: cover;
     position: absolute;
     transform: translateY(-50px);
-   filter: saturate(70%)
+    filter: saturate(70%)
 }
-
 
 .pokemon-label {
     width: 250px;
@@ -70,6 +68,7 @@
     overflow:hidden;
     text-transform: capitalize;
 }
+
 .pokemon-label:after {
         content:'';
         top:0;

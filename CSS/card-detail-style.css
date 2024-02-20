@@ -1,20 +1,19 @@
-.pokemon-details-container {
+.pokemon-profile-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: fixed;
-    top: 0;
+    top: 100px;
     margin: auto;
-    height: 100vh;
+    height: 90vh;
     width: 100%;
 }
 
-.card-pokemon-image-container {
+.pokemon-image-container {
     z-index: 220;
     position: absolute;
-    animation: open-card-pokemon 2s ease-in-out forwards;
-
+    animation: open-card-pokemon 1.5s ease-in-out forwards;
 }
 
 .pokemon-image {
@@ -26,7 +25,7 @@
     filter: drop-shadow(4px 4px 8px black);
 }
 
-.card-pokemon-information-container {
+.pokemon-profile-information-container {
     width: 800px;
     height: 500px;
     z-index: 219;
@@ -35,7 +34,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
-    animation: open-card-information 2s ease-in-out forwards;
+    animation: open-card-information 1.5s ease-in-out forwards;
     border: 6px ridge;
     border-radius: 8px;
     box-shadow: 10px 10px 24px 2px rgba(0,0,0,0.7);
@@ -101,17 +100,10 @@
     color:black;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     padding: 36px 36px 0 36px;
 }
-
-.info-content-row {
-    display: flex;
-    align-items: center;
-
-}
-
 
 .direction-container {
     width: 100%;
@@ -148,7 +140,6 @@
 .info-text {
     font-size: 12px;
     width: 362px;
-    
     text-transform: none;
     color: white;
     text-shadow: 1px 1px 1px black;
@@ -160,11 +151,11 @@
     padding: 8px;
 }
 
-.info-name-bubble {
+.info-move-name {
     font-family: Orbitron;
     width: 120px;
     height: 14px;
-    font-size: 14px;
+    font-size: 12px;
     background-color: rgba(0,0,0,0.1);
     color: white;
     text-shadow: 1px 1px 1px black;
@@ -173,15 +164,20 @@
     align-items: center;
     border-radius: 8px;
     padding: 4px;
+    cursor: default;
 }
 
 .info-container-wrap {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     margin-top: 8px;
+    margin-bottom: 16px;
     flex-wrap: wrap;
     width: 100%;
-    height: 90%;
+    height: auto;
+    overflow: auto;
+    gap: 3px;
 }
 
 .stat-bar-container {
@@ -212,15 +208,9 @@
     align-items: center;
 }
 
-.prev-next {
-    display: flex;
-    width: 30%;
-    justify-content: space-between;
-}
-
-.prev-next a {
-    color: white;
-    text-shadow: 1px 1px 1px black;
-    font-size: 18px;
-    text-decoration: none;
+#loading-bar {
+    text-wrap: nowrap;
+    border-radius: 8px;
+    margin-left: 0;
+    transition: width 0.3s ease;
 }
