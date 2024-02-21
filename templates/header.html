@@ -1,6 +1,14 @@
 <body>
     <div id="main-header-container" class="main-header-container">
-        <input id="search-field" type="text" onclick="clearSearch()"><button onclick="searchPokemon()">Search</button>
-    
+        <div class="header-content-container">
+            <img src="../img/pokemon-23.svg" class="header-logo">
+            <div class="search-container">
+                <input id="search-field" type="text" onclick="clearSearch()">
+                <div class="buttons">
+                    <button onclick="searchPokemon()"><b>Suchen</b></button>
+                    <button onclick="searchCancel()"><b>Zurück</b></button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>

@@ -1,11 +1,3 @@
-
-async function loadAllMoves() {
-    let url = `https://pokeapi.co/api/v2/move?offset=0&limit=937`;
-    let responseAllMoves = await fetch(url);
-    loadedAllMoves = await responseAllMoves.json();
-    console.log('dies sind alle geladenen Moves', loadedAllMoves);
-}
-
 async function openPokemonProfile(pokemonNumber) {
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`;
     let responsePokemon = await fetch(url);
@@ -52,6 +44,11 @@ function renderNavbar(pokemonInfo, height, weight, indexOfType, pokemonNumber, e
 function showAbout(height, weight, indexOfType, experience) {
     let infoContainer = document.getElementById('pokemon-infos');
 
+    document.getElementById('about').style = "background: linear-gradient( to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.2) 50%,rgba(0,0,0,0.5) 100%); border-radius: 8px;";
+    document.getElementById('stats').style = "background: '';"
+    document.getElementById('abilities').style = "background: '';"
+    document.getElementById('moves').style = "background: '';"    
+
     infoContainer.innerHTML = ``;
     renderExperience(infoContainer, indexOfType, experience);
     renderHeight(infoContainer, indexOfType, height);
@@ -63,6 +60,11 @@ async function showStats(indexOfType) {
     let stats = loadedPokemonInfo['stats'];
     let infoContainer = document.getElementById('pokemon-infos');
 
+    document.getElementById('stats').style = "background: linear-gradient( to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.2) 50%,rgba(0,0,0,0.5) 100%); border-radius: 8px;";
+    document.getElementById('about').style = "background: '';"
+    document.getElementById('abilities').style = "background: '';"
+    document.getElementById('moves').style = "background: '';" 
+
     infoContainer.innerHTML = ``;
     createStatsContainer(infoContainer);
 
@@ -71,6 +73,11 @@ async function showStats(indexOfType) {
 }
 
 async function showAbilities(pokemonNumber, indexOfType) {
+    document.getElementById('abilities').style = "background: linear-gradient( to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.2) 50%,rgba(0,0,0,0.5) 100%); border-radius: 8px;";
+    document.getElementById('about').style = "background: '';"
+    document.getElementById('stats').style = "background: '';"
+    document.getElementById('moves').style = "background: '';" 
+
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`;
     let responsePokemon = await fetch(url);
     loadedPokemonInfo = await responsePokemon.json();
@@ -85,6 +92,11 @@ async function showAbilities(pokemonNumber, indexOfType) {
 
 
 async function showMoves(pokemonNumber, indexOfType) {
+    document.getElementById('moves').style = "background: linear-gradient( to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.2) 50%,rgba(0,0,0,0.5) 100%); border-radius: 8px;";
+    document.getElementById('about').style = "background: '';"
+    document.getElementById('abilities').style = "background: '';"
+    document.getElementById('stats').style = "background: '';" 
+
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`;
     let responsePokemon = await fetch(url);
     loadedPokemonInfo = await responsePokemon.json();
@@ -183,11 +195,11 @@ function renderDirection(pokemonInfo, indexOfType, pokemonNumber) {
     return  pokemonInfo.innerHTML += /*HTML*/`
             <div id="direction-container" class="direction-container" style="background-color: ${darkColorOfType[indexOfType]};">
                 <svg onclick="openPreviousCard(${pokemonNumber}, ${indexOfType})"class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="white" d="M20 11H7.41l3.29-3.29A1 1 0 0 0 9.29 6.29L3.71 11.88a1 1 0 0 0 0 1.41l5.58 5.59a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L7.41 13H20a1 1 0 0 0 0-2z"/>
+                    <path d="M20 11H7.41l3.29-3.29A1 1 0 0 0 9.29 6.29L3.71 11.88a1 1 0 0 0 0 1.41l5.58 5.59a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L7.41 13H20a1 1 0 0 0 0-2z"/>
                 </svg>
                 <a href="#" onclick="closeCard(${indexOfType})">schliessen</a>
                 <svg onclick="openNextCard(${pokemonNumber}, ${indexOfType})" class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="white" d="M14.59 11H4a1 1 0 0 0 0 2h10.59l-3.29 3.29a1 1 0 1 0 1.42 1.42l5.59-5.59a1 1 0 0 0 0-1.42l-5.59-5.59a1 1 0 0 0-1.42 1.42L14.59 11z"/>
+                    <path d="M14.59 11H4a1 1 0 0 0 0 2h10.59l-3.29 3.29a1 1 0 1 0 1.42 1.42l5.59-5.59a1 1 0 0 0 0-1.42l-5.59-5.59a1 1 0 0 0-1.42 1.42L14.59 11z"/>
                 </svg>
             </div>
             `;

@@ -33,20 +33,6 @@ async function renderSetOfPokemon(loadedArrayOfPokemon) {
     };
 }
 
-async function loadMorePokemon() {
-    OFFSET = OFFSET + VISIBLE_CLUSTER;
-    
-    document.getElementById('cluster-container').innerHTML += '';
-    renderMainPage();
-}
-
-async function loadPreviousPokemon() {
-    OFFSET = OFFSET -20;
-    
-    document.getElementById('cluster-container').innerHTML += '';
-    renderMainPage();
-}
-
 async function renderEachPokemon(pokemonName) {
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
     let responsePokemon = await fetch(url);
@@ -54,12 +40,12 @@ async function renderEachPokemon(pokemonName) {
     console.log('loaded Info of Pokemon from Set of Results', loadedPokemonInfo);
     let pokemonNumber = loadedPokemonInfo['id'];
 
-    await buildPokemonCluster(pokemonNumber);
+    await createPokemonCluster(pokemonNumber);
 
     await renderPokeballs(loadedPokemonInfo, pokemonName, pokemonNumber);
 }
 
-function buildPokemonCluster(pokemonNumber) {
+function createPokemonCluster(pokemonNumber) {
     document.getElementById('cluster-container').innerHTML += /*HTML*/`
     <div id="pokemon-container${pokemonNumber}" class="pokemon-container" onclick="openPokemonProfile(${pokemonNumber})"></div>
 `;
@@ -77,9 +63,6 @@ function renderPokeballs(loadedPokemonInfo, pokemonName, pokemonNumber) {
     }
 }
 
-function secondTypeAvailiable() {
-    return loadedPokemonInfo['types'].length > 1
-}
 
 function showPokeBallWithOneType(artwork, type1, indexOfType1, pokemonName, pokemonNumber) {
     return document.getElementById(`pokemon-container${pokemonNumber}`).innerHTML = /*HTML*/`
@@ -121,6 +104,22 @@ function showPokeBallWithTwoTypes(artwork, type1, indexOfType1, pokemonName, pok
     `;
 }
 
+// Funktionen für Buttons/Links
+
+async function loadMorePokemon() {
+    OFFSET = OFFSET + VISIBLE_CLUSTER;
+    
+    document.getElementById('cluster-container').innerHTML += '';
+    renderMainPage();
+}
+
+async function loadPreviousPokemon() {
+    OFFSET = OFFSET -20;
+    
+    document.getElementById('cluster-container').innerHTML += '';
+    renderMainPage();
+}
+
 async function searchPokemon () {
     let search = document.getElementById('search-field').value;
     search = search.toLowerCase();
@@ -138,4 +137,15 @@ async function searchPokemon () {
 
 function clearSearch() {
     document.getElementById('search-field').value = '';
+}
+
+function searchCancel() {
+    clearSearch();
+    searchPokemon();
+}
+
+//returns und ausgelagertes
+
+function secondTypeAvailiable() {
+    return loadedPokemonInfo['types'].length > 1
 }

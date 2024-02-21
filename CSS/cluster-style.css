@@ -38,6 +38,7 @@
     filter: drop-shadow(10px 10px 15px rgba(0, 0, 0, 0.8));
 }
 
+
 .pokemonArtwork{
     height: 150px;
     filter: drop-shadow(10px 10px 4px rgba(0, 0, 0, 0.6));
@@ -46,6 +47,11 @@
     position: absolute;
     transform: translateY(-50px);
     filter: saturate(70%)
+}
+
+.pokemonArtwork:hover{
+    height: 170px;
+    filter: saturate(90%)
 }
 
 .pokemon-label {
