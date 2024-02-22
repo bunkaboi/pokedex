@@ -70,3 +70,17 @@ button {
     font-weight: bolder;
     cursor: pointer;
 }
+
+@media(max-width: 600px) {
+    .main-header-container {
+        height: 160px;
+    }
+    .header-content-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .search-container {
+
+        height: auto;
+    }
+}

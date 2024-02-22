@@ -306,7 +306,7 @@ function createStats(infoStatContainer, statNameGerman, indexOfType, statsNumber
                 <div id="stat-Value">
                     <div class="stat-bar-container">
                         <div id="stat-bar" class="stat-bar" style="border-color: ${darkColorOfType[indexOfType]}; background-color: ${midColorOfType[indexOfType]};">
-                            <div class="stat-bar-progress" style="width: ${statsNumber['base_stat']/0.7}px; background-color: ${darkColorOfType[indexOfType]};">
+                            <div class="stat-bar-progress" style="width: ${statsNumber['base_stat']*100/255}%; background-color: ${darkColorOfType[indexOfType]};">
                                 ${statsNumber['base_stat']}&nbsp;&nbsp;
                             </div>
                             255&nbsp;&nbsp;
